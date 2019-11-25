@@ -8,6 +8,7 @@
 * Set up a basic webapp using Flash <br />
 * MNIST dataset reading in and can printing out first image <br />
 * CNN set up. Some problems exist and changes to be made. <br />
+* Changed CNN. Now working with a 98.6% accuracy 
 
 ## Resources 
 * [Useful article on how to build a model with MNIST dataset](https://medium.com/coinmonks/handwritten-digit-prediction-using-convolutional-neural-networks-in-tensorflow-with-keras-and-live-5ebddf46dc8)
