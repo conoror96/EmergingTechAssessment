@@ -114,7 +114,7 @@
 			ctx.moveTo(lastPos.x, lastPos.y);
 			ctx.lineTo(mousePos.x, mousePos.y);
             ctx.stroke();
-            ctx.lineWidth = 5;
+            ctx.lineWidth = 8;
 			lastPos = mousePos;
 		}
 	}
