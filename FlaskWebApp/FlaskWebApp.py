@@ -4,6 +4,8 @@
 # https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.misc.imsave.html
 # https://www.tensorflow.org/api_docs/python/tf/compat/v1/get_default_graph
 # https://stackoverflow.com/questions/15345790/scipy-misc-module-has-no-attribute-imread
+# https://stackoverflow.com/questions/56513905/not-found-container-localhost-does-not-exist-when-i-load-model-with-tensorflow
+# https://github.com/tensorflow/tensorflow/issues/28287#issuecomment-495005162
 from flask import Flask, render_template, request
 # used for saving, reading, and resizing images
 # Scipy was deprecated on the version I was using. Using 1.2.0 now
@@ -18,14 +20,18 @@ import base64
 import tensorflow as tf
 # import load_model from keras
 from keras.models import load_model
-
+from keras.backend import set_session
 # Initialise Flask App
 app = Flask(__name__)
 
 # global variables for model & graph
 global model, graph, sess
+#sess = tf.Session().as_default()
 
 
+sess = tf.Session()
+
+set_session(sess)
 # set graph to the current computation graph
 graph = tf.get_default_graph()
 
@@ -59,9 +65,11 @@ def predict():
   imsave('final_image.jpg', x)
   # Reshape image
   x = x.reshape(1, 28, 28, 1)
+  #with tf.Session().as_default(sess):
   # computation graph
   with graph.as_default():
-	  # prediction is made
+    set_session(sess)
+	# prediction is made
     out = model.predict(x)
     # convert the response to a string and return
     response = np.argmax(out, axis=1)
