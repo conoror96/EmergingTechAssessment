@@ -20,18 +20,19 @@ import base64
 import tensorflow as tf
 # import load_model from keras
 from keras.models import load_model
+# import set_session
 from keras.backend import set_session
 # Initialise Flask App
 app = Flask(__name__)
 
-# global variables for model & graph
+# global variables
 global model, graph, sess
-#sess = tf.Session().as_default()
 
-
+# Set the sessions before the models are loaded in 
+# as their weight will be unavailable in the threads after the session has been set
 sess = tf.Session()
-
 set_session(sess)
+
 # set graph to the current computation graph
 graph = tf.get_default_graph()
 
@@ -69,7 +70,7 @@ def predict():
   # computation graph
   with graph.as_default():
     set_session(sess)
-	# prediction is made
+	  # prediction is made
     out = model.predict(x)
     # convert the response to a string and return
     response = np.argmax(out, axis=1)
