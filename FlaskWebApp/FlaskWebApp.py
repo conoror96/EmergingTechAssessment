@@ -2,10 +2,11 @@
 # Adapted from https://www.youtube.com/watch?v=f6Bf3gl4hWY
 # https://docs.python.org/2/library/
 # https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.misc.imsave.html
+# https://www.tensorflow.org/api_docs/python/tf/compat/v1/get_default_graph
+# https://stackoverflow.com/questions/15345790/scipy-misc-module-has-no-attribute-imread
 from flask import Flask, render_template, request
 # used for saving, reading, and resizing images
 # Scipy was deprecated on the version I was using. Using 1.2.0 now
-# https://stackoverflow.com/questions/15345790/scipy-misc-module-has-no-attribute-imread
 from scipy.misc import imread, imresize, imsave
 # For matrix math
 import numpy as np
@@ -22,9 +23,10 @@ from keras.models import load_model
 app = Flask(__name__)
 
 # global variables for model & graph
-global model, graph
+global model, graph, sess
 
-#graph 
+
+# set graph to the current computation graph
 graph = tf.get_default_graph()
 
 # Load trained model
@@ -59,7 +61,7 @@ def predict():
   x = x.reshape(1, 28, 28, 1)
   # computation graph
   with graph.as_default():
-	# prediction is made
+	  # prediction is made
     out = model.predict(x)
     # convert the response to a string and return
     response = np.argmax(out, axis=1)
@@ -67,4 +69,5 @@ def predict():
 
 # Run the app on given port 
 if __name__ == "__main__":
+  #app.run()
 	app.run(host='0.0.0.0', port=5000, threaded=False)
