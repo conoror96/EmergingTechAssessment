@@ -13,7 +13,10 @@ import sys
 import base64
 import tensorflow as tf
 from keras.models import load_model
-
+#for reading operating system data
+import os
+#tell our app where our saved model is
+#sys.path.append(os.path.abspath("/model"))
 # Initialise Flask
 app = Flask(__name__)
 
@@ -22,6 +25,7 @@ global model, graph
 
 #graph 
 graph = tf.get_default_graph()
+#model = load_model()
 
 # Load trained model
 model = load_model('model.h5')
