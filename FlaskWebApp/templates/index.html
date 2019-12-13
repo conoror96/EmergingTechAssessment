@@ -36,6 +36,9 @@
     <script src="../static/index.js"></script>
     
     <!-- Submit Button -->
+    <!-- When button is clicked, get the handrawn image from the canvas and store it in canvasObj
+      Then convert to a string format
+      Then use ajax to make a POST to the predict route using the image as a param -->
 	  <script type="text/javascript">
     $(".myButton").click(function() {
       var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
