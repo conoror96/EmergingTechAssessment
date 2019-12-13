@@ -1,5 +1,6 @@
 # Adapted from https://pythonspot.com/flask-hello-world/
 # Adapted from https://www.youtube.com/watch?v=f6Bf3gl4hWY
+# https://docs.python.org/2/library/
 # https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.misc.imsave.html
 from flask import Flask, render_template, request
 # used for saving, reading, and resizing images
@@ -8,24 +9,23 @@ from flask import Flask, render_template, request
 from scipy.misc import imread, imresize, imsave
 # For matrix math
 import numpy as np
+# for regular expressions
 import re
-import sys
+# Used to decode the image with b64decode
 import base64
+# import tensorflow
 import tensorflow as tf
+# import load_model from keras
 from keras.models import load_model
-#for reading operating system data
-import os
-#tell our app where our saved model is
-#sys.path.append(os.path.abspath("/model"))
-# Initialise Flask
+
+# Initialise Flask App
 app = Flask(__name__)
 
-# global variables
+# global variables for model & graph
 global model, graph
 
 #graph 
 graph = tf.get_default_graph()
-#model = load_model()
 
 # Load trained model
 model = load_model('model.h5')
@@ -35,10 +35,14 @@ def convertImage(imgData1):
   imgstr = re.search(r'base64,(.*)', str(imgData1)).group(1)
   with open('output.png', 'wb') as output:
     output.write(base64.b64decode(imgstr))
- 
+
+# Render the webpage
 @app.route('/')
 def index():
   return render_template("index.html")
+
+# When the predict method is called, the user drawn image will be input to the model
+# A conclusion is reached and a classification is returned
 @app.route('/predict/', methods=['GET', 'POST'])
 def predict():
   #get the raw data format of the image
@@ -55,8 +59,9 @@ def predict():
   x = x.reshape(1, 28, 28, 1)
   # computation graph
   with graph.as_default():
-	# perform prediciton  
+	# prediction is made
     out = model.predict(x)
+    # convert the response to a string and return
     response = np.argmax(out, axis=1)
     return str(response[0])
 

@@ -1,3 +1,5 @@
+// https://www.w3schools.com/
+// Adapted from https://www.youtube.com/watch?v=f6Bf3gl4hWY
 (function() {
 	var canvas = document.querySelector("#canvas");
 	var context = canvas.getContext("2d");
@@ -9,22 +11,25 @@
 	var lastMouse = { x: 0, y: 0 };
 	// canvas colour
 	context.fillStyle = "black";
+	// Draws a filled rectangle in black (default)
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	// paint stroke colour
 	context.color = "white";
+	// stroke size
 	context.lineWidth = 15;
+	// Creates a rounded edge when two lines meet and draws a line with rounded end caps
 	context.lineJoin = context.lineCap = "round";
-
+	
 	clearCanvas();
 	  
+	/** EVENT LISTENERS */  
   	canvas.addEventListener( "mousemove",
-	function(e) { 
+	function(e) { 	
 	  lastMouse.x = Mouse.x;
 	  lastMouse.y = Mouse.y;
 	  Mouse.x = e.pageX - this.offsetLeft;
 	  Mouse.y = e.pageY - this.offsetTop;
 	  }, false);
-	/** EVENT LISTENERS */  
   	canvas.addEventListener("mousedown",
 	function(e) {
 	  canvas.addEventListener("mousemove", onPaint, false);
@@ -46,7 +51,7 @@
 	context.closePath();
 	context.stroke();
   	};
-  	/* CLEAR BUTTON */
+  	/* CLEAR CANVAS FUNCTION */
   	function clearCanvas() {
 	var clearButton = $("#clearButton");
 	clearButton.on("click", function() {
